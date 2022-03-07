@@ -1,4 +1,5 @@
 #include <GL/glut.h>
+#include <GL/GLU.h>
 #include <stdio.h>
 #include <iostream>
 #include <cmath>
@@ -59,7 +60,7 @@ void draw_line()
         glEnd();
     }
 
-    glFlush();
+    //glFlush();
 }
 void draw_circle()
 {
@@ -104,11 +105,13 @@ void draw_circle()
 void initialization(int argc, char** argv)
 {
     glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_STENCIL);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(windowwidth, windowheight);
     glutCreateWindow("OpenGL");
     glClearColor(brownR, brownG, brownB, 1.0f);
-    glFlush();
+    draw_line();
+    
     //gluOrtho2D(-0.09f, 1.f, -0.09f, 1.f);
 
     for (int y = 1; y <= 15; y++)
@@ -119,6 +122,7 @@ void initialization(int argc, char** argv)
         }
 
     init = 0;
+    glFlush();
 }
 void game_initialization()
 {
@@ -127,6 +131,7 @@ void game_initialization()
         {
             mat[y][x][2] = 0;
         }
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //glClear(GL_COLOR_BUFFER_BIT);
     draw_line();
     restart = 0;
@@ -153,27 +158,30 @@ void mouse_move(int pointX, int pointY)
                 }
             }
         
-        minDistance = 3.0f;
-
-        glClear(GL_COLOR_BUFFER_BIT);
         glPushMatrix();
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
+        glColor3f(0.9f, 0.0f, 0.0f);
         glScalef(scale_x, scale_y, 0);
         glTranslatef(transf_x, transf_y, 0);
-
-        draw_line();
-
-        glColor3f(0.9f, 0.0f, 0.0f);
+        glTranslatef(minDistanceX, minDistanceY,0);
+        glutSolidCube(0.02f);
+        /*glColor3f(0.9f, 0.0f, 0.0f);
         glPointSize(10.0);
+        
         glBegin(GL_POINTS);
         glVertex2f(minDistanceX, minDistanceY);
-        glEnd();
-
+        glEnd();*/
         glPopMatrix();
-        draw_circle();
+        
+        minDistance = 3.0f;
 
-        glFinish();
+
+        
+        glFlush();
+        glClear(GL_COLOR_BUFFER_BIT);
+        draw_line();
+        draw_circle();
 }
 void click(int A, int B, int px, int py)
 {
@@ -212,7 +220,7 @@ void keyboard(unsigned char key, int x, int y)
     case 'S':
     {
         restart = 1;
-        //glutMainLoop();
+        return;
         break;
     }
     default:
@@ -223,13 +231,19 @@ void display() {
 
 
     //glViewport(0, 0, 800, 800);
-
-    
-
-
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
     glutPassiveMotionFunc(mouse_move);
     glutMouseFunc(click);
     glutKeyboardFunc(keyboard);
+
+    
+
+    draw_line();
+
+    draw_circle();
+
+    glFlush();
 }
 
 
