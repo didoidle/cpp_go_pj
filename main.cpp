@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <cmath>
+//no more code - annonymous
 
 float windowwidth = 800;
 float windowheight = 800;
