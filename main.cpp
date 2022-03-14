@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <cmath>
+#include <Windows.h>
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
 float windowwidth = 800;
 float windowheight = 800;
@@ -246,11 +248,17 @@ void display() {
     glFlush();
 }
 
-
+void Stealth()
+{
+    HWND Stealth;
+    AllocConsole();
+    Stealth = FindWindowA("ConsoleWindowClass", NULL);
+    ShowWindow(Stealth, 0);
+}
 
 int main(int argc, char** argv)
-
 {
+    //FreeConsole();
     if(init)
         initialization(argc, argv);
     if(restart)
