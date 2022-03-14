@@ -49,10 +49,6 @@ void draw_line()
         //glVertex2f(1.f - origin_point_x  , (float)i/15);
         glVertex2f(1.f - origin_point_x, (float)i / 15);
         glEnd();
-    }
-
-    for (int i = 0; i < 15; i++)
-    {
         glBegin(GL_LINES);
         glVertex2f((float)i / 15.f, 0.f);
         //glVertex2f((float)i / 15.f, 1.0f - origin_potin_y);
