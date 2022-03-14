@@ -155,7 +155,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DrawGL.cpp" />
+    <ClCompile Include="DrawView.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="OperateGL.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DrawGL.h" />
+    <ClInclude Include="DrawView.h" />
+    <ClInclude Include="OperateGL.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
