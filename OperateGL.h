@@ -10,7 +10,7 @@ class OperateGL
 private:
     float windowwidth = 800;
     float windowheight = 800;
-    bool init = 1, restart = 1;
+    /*bool init = 1, restart = 1;*/
 
 public:
 

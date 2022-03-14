@@ -18,9 +18,6 @@ void OperateGL::initGame(int argc, char** argv, float matrix[15][15][3])
             matrix[y - 1][x][1] = 1.f - ((float)y / 15);
         }
 
-    //init을 1에서 0으로 변경해준다.(다시 시작안되게함)
-    init = 0;
-
     // 준비되면 화면을 띄운다.
     glFlush();
 }
@@ -34,6 +31,4 @@ void OperateGL::resetGame(float matrix[15][15][3])
             matrix[y][x][2] = 0;
         }
 
-    // 시작인 경우 Restart를 0으로 돌려준다. 재시작을 할 경우restart 1이 되게한다.
-    restart = 0;
 }

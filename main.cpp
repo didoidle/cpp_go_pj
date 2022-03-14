@@ -7,6 +7,8 @@
 #include "DrawView.h"
 #include "DrawGL.h"
 #include "OperateGL.h"
+#include "physics.h"
+#include "main.h"
 
 using namespace std;
 
@@ -31,6 +33,10 @@ float scale_x = 2.0;
 float scale_y = 2.0;
 float transf_x = -0.47;
 float transf_y = -0.47;
+
+int direct_x, direct_y;
+int circleCount = 0, maxCount = 0;
+float radius = 0.03f;
 
 DrawGL gl;
 OperateGL os;
@@ -76,10 +82,8 @@ void mouse_move(int pointX, int pointY)
     glClear(GL_COLOR_BUFFER_BIT);
 
     gl.glDrawScale();
-
     gl.drawLine();
     gl.glDrawStone(mat);
-
 }
 
 void click(int A, int B, int px, int py)
@@ -89,10 +93,12 @@ void click(int A, int B, int px, int py)
         {
             if (Turn == 0) {
                 mat[position_y][position_x][2] = 1;
+                check_over(position_x, position_y, mat[position_y][position_x][2]);
                 Turn = 1;
             }
             else {
                 mat[position_y][position_x][2] = 2;
+                check_over(position_x, position_y, mat[position_y][position_x][2]);
                 Turn = 0;
             }
 
@@ -107,6 +113,10 @@ void keyboard(unsigned char key, int x, int y)
 
 void display() {
 
+    if (restart) {        
+        os.resetGame(mat);
+        restart = 0;
+    }
     glClear(GL_COLOR_BUFFER_BIT);
 
     // 기본 마우스 이동시 적용될 함수.
@@ -123,24 +133,166 @@ void display() {
 
     gl.drawLine();
 
-    //view.DrawStoneOnBoard(mat);
     gl.glDrawStone(mat);
 
     // 화면에 띄운다.
     glFlush();
 }
 
+void direct(int x, int y)  // 알고리즘에서 사용할 x ,y 임시 저장한다.
+{
+    direct_x = x;
+    direct_y = y;
+}
+
+void check_over(int xPos, int yPos, int color)  // 클릭할 떄마다 실행된다.
+{
+
+    int count[8] = { 0, };
+    for (int i = 0; i < 8; i++)
+    {
+        int x = xPos; int y = yPos;
+        while (x >= 0 && y >= 0 && x <= 14 && y <= 14)
+        {
+
+            switch (i)
+            {
+            case 0:
+                direct(-1, -1);
+                break;
+            case 1:
+                direct(0, -1);
+                break;
+            case 2:
+                direct(1, -1);
+                break;
+            case 3:
+                direct(1, 0);
+                break;
+            case 4:
+                direct(1, 1);
+                break;
+            case 5:
+                direct(0, 1);
+                break;
+            case 6:
+                direct(-1, 1);
+                break;
+            case 7:
+                direct(-1, 0);
+                break;
+            default:
+                break;
+            }
+            x = x + direct_x; y = y + direct_y;
+            if (x >= 0 && y >= 0 && x <= 14 && y <= 14) {
+                if (mat[y][x][2] == color)
+                {
+                    count[i]++;
+                    //std::cout << count[0] + count[4] << std::endl;
+                    //std::cout << count[1] + count[5] << std::endl;
+                    //std::cout << count[2] + count[6] << std::endl;
+                    //std::cout << count[3] + count[7] << std::endl;
+                    //std::cout << "\n" << std::endl;
+                }
+                else
+                    break;
+            }
+            else
+                break;
+
+        }
+        if ((count[0] + count[4]) == 4) {            
+            over();
+            break;
+        }
+        else if ((count[1] + count[5]) == 4) {            
+            over();
+            break;
+        }
+        else if ((count[2] + count[6]) == 4) {            
+            over();
+            break;
+        }
+        else if ((count[3] + count[7]) == 4) {           
+            over();
+            break;
+        }
+        else
+            continue;
+    }
+}
+
+void over() {
+
+    gl.glDrawStone(mat);
+
+    glFlush();
+
+    Sleep(3000);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    rigidCircle* CC = new rigidCircle[255];
+    for (int y = 0; y < 15; y++)
+        for (int x = 0; x < 15; x++)
+        {
+            if (mat[y][x][2] != 0) {
+                CC[circleCount] = rigidCircle(mat[y][x][0], mat[y][x][1],
+                    mat[position_y][position_x][0], mat[position_y][position_x][1],
+                    radius, mat[y][x][2], 0.1);
+
+                circleCount++;
+                maxCount = circleCount;
+            }
+        }
+    circleCount = 0;
+
+    for (int i = 0; i < 100; i++)
+    {
+        glClear(GL_COLOR_BUFFER_BIT);
+        gl.glDrawScale();
+        gl.drawLine();
+
+        while (circleCount < maxCount)
+        {
+
+
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            glScalef(scale_x, scale_y, 0);
+            glTranslatef(transf_x, transf_y, 0);
+            glTranslatef(CC[circleCount].x, CC[circleCount].y, 0);
+            glColor3f(CC[circleCount].R, CC[circleCount].G, CC[circleCount].B);
+            glBegin(GL_POLYGON);
+            for (float fAngle = 0.f; fAngle < 360.f; fAngle += 1.0f) {
+                glVertex2f(cos(fAngle) * radius, sin(fAngle) * radius);
+
+            }
+
+            glEnd();
+            glPopMatrix();
+            CC[circleCount].update();
+            circleCount++;
+            Sleep(1);
+
+        }
+        glFlush();
+        circleCount = 0;
+    }
+
+    //game_over = 1;
+    restart = 1;
+
+    delete[] CC;
+}
+
 int main(int argc, char** argv)
 {
     // 초기화면 시작 
-    if (init) {
-        puts("화면 초기화 시작");
+    if (init) {        
         os.initGame(argc, argv, mat);
-    }
-
-    if (restart) {
-        puts("게임 초기화 시작");
-        os.resetGame(mat);
+        init = 0;
     }
 
     glutDisplayFunc(display);
@@ -148,5 +300,5 @@ int main(int argc, char** argv)
     glutMainLoop();
 
     return 0;
-
 }
+// ==================================================================================================== //

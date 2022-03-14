@@ -163,7 +163,9 @@
   <ItemGroup>
     <ClInclude Include="DrawGL.h" />
     <ClInclude Include="DrawView.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="OperateGL.h" />
+    <ClInclude Include="physics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
