@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cmath>
 #include "main.h"
+
 using namespace std;
 
 float windowwidth = 800;
@@ -327,7 +328,7 @@ void check_over(int xPos, int yPos, int color)
 void over() {
     draw_circle();
     glFlush();
-    Sleep(3000);
+    Sleep(2000);
     glClear(GL_COLOR_BUFFER_BIT);
     
 
@@ -357,7 +358,7 @@ void over() {
             }
         }
     circleCount = 0;
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 70; i++)
     {
         glClear(GL_COLOR_BUFFER_BIT);
         draw_line();
@@ -435,6 +436,8 @@ void display() {
 int main(int argc, char** argv)
 
 {
+    HWND hConsole = GetConsoleWindow();
+    ShowWindow(hConsole, SW_HIDE);
     //if (init)
     initialization(argc, argv);
     

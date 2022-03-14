@@ -38,7 +38,7 @@ public:
 	//}
 	void update()
 	{
-		
+		gravity = gravity * 1.23;
 		x = x + vx;
 		y = y + vy + gravity;
 	}
