@@ -3,17 +3,19 @@
 #include <stdio.h>
 #include <iostream>
 #include <cmath>
-#include <Windows.h>
-#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+#include <vector>
+#include "DrawView.h"
+#include "DrawGL.h"
+#include "OperateGL.h"
+#include "RigidCircle.h"
+#include "main.h"
+
+using namespace std;
 
 float windowwidth = 800;
 float windowheight = 800;
 float x_width = windowwidth / 2;
 float y_height = windowheight / 2;
-
-float brownR = (float)152/255;
-float brownG = (float)102/255;
-float brownB = (float)52/255;
 
 bool init = 1, restart = 1;
 static float mat[15][15][3];
@@ -32,240 +34,277 @@ float scale_y = 2.0;
 float transf_x = -0.47;
 float transf_y = -0.47;
 
+int direct_x, direct_y;
+int circleCount = 0, maxCount = 0;
 float radius = 0.03f;
 
-void draw_line() 
+DrawGL gl;
+OperateGL os;
+
+void mouseEvent(int pointX, int pointY)
 {
+    float XX = (float)(pointX - 20) / 800;
+    float YY = 0.97f - (float)(pointY) / 800;
 
-    glClearColor(brownR, brownG, brownB, 1.0f);
-    glLoadIdentity();
-    glScalef(scale_x, scale_y, 0);
-    glTranslatef(transf_x, transf_y, 0);
-    glColor3f(0.0f, 0.0f, 1.0f);
-    glLineWidth(2.0);
-
-    for (int i = 0; i < 15; i++)
-    {
-        glBegin(GL_LINES);
-        glVertex2f(0.f, (float)i / 15);
-        //glVertex2f(1.f - origin_point_x  , (float)i/15);
-        glVertex2f(1.f - origin_point_x, (float)i / 15);
-        glEnd();
-    }
-
-    for (int i = 0; i < 15; i++)
-    {
-        glBegin(GL_LINES);
-        glVertex2f((float)i / 15.f, 0.f);
-        //glVertex2f((float)i / 15.f, 1.0f - origin_potin_y);
-        glVertex2f((float)i / 15.f, 1.0f - origin_potin_y);
-        glEnd();
-    }
-
-    //glFlush();
-}
-void draw_circle()
-{
     for (int y = 0; y < 15; y++)
         for (int x = 0; x < 15; x++)
         {
-            if(mat[y][x][2] != 0)
-                if (mat[y][x][2] == 1)
-                {
-                    glMatrixMode(GL_MODELVIEW);
-                    glLoadIdentity();
-                    glScalef(scale_x, scale_y, 0);
-                    glTranslatef(transf_x, transf_y, 0);
-                    glTranslatef(mat[y][x][0], mat[y][x][1], 0);
-                    glColor3f(0.0f, 0.0f, 0.0f);
-                    glBegin(GL_POLYGON);
-                    for (float fAngle = 0.f; fAngle < 360.f; fAngle += 1.0f) {
-                        glVertex2f(cos(fAngle) * radius, sin(fAngle) * radius);
-
-                    }
-                    glEnd();
-                    glPopMatrix();
-                }
-                else
-                {   
-                    glMatrixMode(GL_MODELVIEW);
-                    glLoadIdentity();
-                    glScalef(scale_x, scale_y, 0);
-                    glTranslatef(transf_x, transf_y, 0);
-                    glTranslatef(mat[y][x][0], mat[y][x][1], 0);
-                    glColor3f(1.0f, 1.0f, 1.0f);
-                    glBegin(GL_POLYGON);
-                    for (float fAngle = 0.f; fAngle < 360.f; fAngle += 1.0f) {
-                        glVertex2f(cos(fAngle) * radius, sin(fAngle) * radius);
-
-                    }
-                    glEnd();
-                    glPopMatrix();
-                }
-        }
-}
-void initialization(int argc, char** argv)
-{
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_STENCIL);
-    glutInitWindowPosition(100, 100);
-    glutInitWindowSize(windowwidth, windowheight);
-    glutCreateWindow("OpenGL");
-    glClearColor(brownR, brownG, brownB, 1.0f);
-    draw_line();
-    
-    //gluOrtho2D(-0.09f, 1.f, -0.09f, 1.f);
-
-    for (int y = 1; y <= 15; y++)
-        for (int x = 0; x < 15; x++)
-        {
-            mat[y-1][x][0] = ((float)x / 15 );
-            mat[y-1][x][1] = 1.f - ((float)y / 15 );
-        }
-
-    init = 0;
-    glFlush();
-}
-void game_initialization()
-{
-    for (int y = 0; y < 15; y++)
-        for (int x = 0; x < 15; x++)
-        {
-            mat[y][x][2] = 0;
-        }
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glClear(GL_COLOR_BUFFER_BIT);
-    draw_line();
-    restart = 0;
-}
-
-void mouse_move(int pointX, int pointY)
-{
-        
-        //std::cout << pointX << " " << pointY << "\n" << std::endl;
-        float XX = (float)(pointX-20) / 800;
-        float YY = 0.97f - (float)(pointY) / 800;
-
-        for (int y = 0; y < 15; y++)
-            for (int x = 0; x < 15; x++)
+            Distance = pow(mat[y][x][0] - XX, 2) + pow(mat[y][x][1] - YY, 2);
+            if (minDistance > Distance)
             {
-                Distance = pow(mat[y][x][0] - XX, 2) + pow(mat[y][x][1] - YY, 2);
-                if (minDistance > Distance)
-                {
-                    minDistance = Distance;
-                    minDistanceX = mat[y][x][0];
-                    minDistanceY = mat[y][x][1];
-                    position_x = x;
-                    position_y = y;
-                }
+                minDistance = Distance;
+                minDistanceX = mat[y][x][0];
+                minDistanceY = mat[y][x][1];
+                position_x = x;
+                position_y = y;
             }
-        
-        glPushMatrix();
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-        glColor3f(0.9f, 0.0f, 0.0f);
-        glScalef(scale_x, scale_y, 0);
-        glTranslatef(transf_x, transf_y, 0);
-        glTranslatef(minDistanceX, minDistanceY,0);
-        glutSolidCube(0.02f);
-        /*glColor3f(0.9f, 0.0f, 0.0f);
-        glPointSize(10.0);
-        
-        glBegin(GL_POINTS);
-        glVertex2f(minDistanceX, minDistanceY);
-        glEnd();*/
-        glPopMatrix();
-        
-        minDistance = 3.0f;
+        }
 
+    glPushMatrix();
 
-        
-        glFlush();
-        glClear(GL_COLOR_BUFFER_BIT);
-        draw_line();
-        draw_circle();
+    glMatrixMode(GL_MODELVIEW);
+
+    glLoadIdentity();
+
+    glColor3f(0.9f, 0.0f, 0.0f);
+
+    glScalef(scale_x, scale_y, 0);
+
+    glTranslatef(transf_x, transf_y, 0);
+
+    glTranslatef(minDistanceX, minDistanceY, 0);
+
+    glutSolidCube(0.02f);
+
+    glPopMatrix(); // ���ϰڴ�.
+
+    minDistance = 3.0f;
+
+    glFlush();
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    gl.glDrawScale();
+    gl.drawLine();
+    gl.glDrawStone(mat);
 }
-void click(int A, int B, int px, int py)
+
+void clickEvent(int A, int B, int px, int py)
 {
-    
     if (B == GLUT_DOWN)
         if (mat[position_y][position_x][2] == 0)
         {
-            /*for (int y = 0; y < 15; y++) {
-                for (int x = 0; x < 15; x++)
-                {
-                    std::cout << mat[y][x][2] << ", " << std::endl;
-                }
-                printf("\n");
-            }*/
-            
             if (Turn == 0) {
                 mat[position_y][position_x][2] = 1;
+                checkOver(position_x, position_y, mat[position_y][position_x][2]);
                 Turn = 1;
             }
             else {
                 mat[position_y][position_x][2] = 2;
+                checkOver(position_x, position_y, mat[position_y][position_x][2]);
                 Turn = 0;
             }
         }
-    
 }
-void keyboard(unsigned char key, int x, int y)
+
+void keyboardEvent(unsigned char key, int x, int y)
 {
-    switch (key)
-    {
-    case 'q':
-    case 'Q':
-        exit(0);
-        break;
-    case 's':
-    case 'S':
-    {
-        restart = 1;
-        return;
-        break;
-    }
-    default:
-        break;
-    }
+    if (key == 'q' || key == 'Q') exit(0);
+    else if (key == 'S' || key == 's') os.resetGame(mat);
 }
+
 void display() {
 
-
-    //glViewport(0, 0, 800, 800);
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (restart) {        
+        os.resetGame(mat);
+        restart = 0;
+    }
     glClear(GL_COLOR_BUFFER_BIT);
-    glutPassiveMotionFunc(mouse_move);
-    glutMouseFunc(click);
-    glutKeyboardFunc(keyboard);
 
-    
+    // �⺻ ���콺 �̵��� ���� �Լ�.
+    glutPassiveMotionFunc(mouseEvent);
 
-    draw_line();
+    // �⺻ ���콺 Ŭ���� ���� �Լ�.
+    glutMouseFunc(clickEvent);
 
-    draw_circle();
+    // Ű���� �Է½� ���� �Լ�.
+    glutKeyboardFunc(keyboardEvent);
 
+    // ȭ��� �׸���.
+    gl.glDrawScale();
+
+    gl.drawLine();
+
+    gl.glDrawStone(mat);
+
+    // ȭ�鿡 ����.
     glFlush();
 }
 
-void Stealth()
+void direct(int x, int y)  // �˰��򿡼� ����� x ,y �ӽ� �����Ѵ�.
 {
-    HWND Stealth;
-    AllocConsole();
-    Stealth = FindWindowA("ConsoleWindowClass", NULL);
-    ShowWindow(Stealth, 0);
+    direct_x = x;
+    direct_y = y;
+}
+
+void checkOver(int xPos, int yPos, int color)  // Ŭ���� ������ ����ȴ�.
+{
+
+    int count[8] = { 0, };
+    for (int i = 0; i < 8; i++)
+    {
+        int x = xPos; int y = yPos;
+        while (x >= 0 && y >= 0 && x <= 14 && y <= 14)
+        {
+
+            switch (i)
+            {
+            case 0:
+                direct(-1, -1);
+                break;
+            case 1:
+                direct(0, -1);
+                break;
+            case 2:
+                direct(1, -1);
+                break;
+            case 3:
+                direct(1, 0);
+                break;
+            case 4:
+                direct(1, 1);
+                break;
+            case 5:
+                direct(0, 1);
+                break;
+            case 6:
+                direct(-1, 1);
+                break;
+            case 7:
+                direct(-1, 0);
+                break;
+            default:
+                break;
+            }
+            x = x + direct_x;
+            y = y + direct_y;
+
+            if (x >= 0 && y >= 0 && x <= 14 && y <= 14) {
+                if (mat[y][x][2] == color)
+                {
+                    count[i]++;
+                    //std::cout << count[0] + count[4] << std::endl;
+                    //std::cout << count[1] + count[5] << std::endl;
+                    //std::cout << count[2] + count[6] << std::endl;
+                    //std::cout << count[3] + count[7] << std::endl;
+                    //std::cout << "\n" << std::endl;
+                }
+                else
+                    break;
+            }
+            else
+                break;
+
+        }
+        if ((count[0] + count[4]) == 4) {            
+            gameOverAnim();
+            break;
+        }
+        else if ((count[1] + count[5]) == 4) {            
+            gameOverAnim();
+            break;
+        }
+        else if ((count[2] + count[6]) == 4) {            
+            gameOverAnim();
+            break;
+        }
+        else if ((count[3] + count[7]) == 4) {           
+            gameOverAnim();
+            break;
+        }
+        else
+            continue;
+    }
+}
+
+void gameOverAnim() {
+
+    gl.glDrawStone(mat);
+
+    glFlush();
+
+    Sleep(3000);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    RigidCircle* CC = new RigidCircle[255];
+
+    for (int y = 0; y < 15; y++)
+        for (int x = 0; x < 15; x++)
+        {
+            if (mat[y][x][2] != 0) {
+
+                CC[circleCount] = RigidCircle(mat[y][x][0], mat[y][x][1],
+                    mat[position_y][position_x][0], mat[position_y][position_x][1],
+                    radius, mat[y][x][2], 0.1);
+
+                circleCount++;
+                maxCount = circleCount;
+            }
+        }
+    circleCount = 0;
+
+    for (int i = 0; i < 100; i++)
+    {
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        gl.glDrawScale();
+        gl.drawLine();
+
+        while (circleCount < maxCount)
+        {
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            glScalef(scale_x, scale_y, 0);
+            glTranslatef(transf_x, transf_y, 0);            
+            glTranslatef(CC[circleCount].x, CC[circleCount].y, 0);
+
+            
+            DrawView draw;
+            draw.drawCircle(CC[circleCount].clr);
+            
+
+            glEnd();
+            glPopMatrix();
+
+            CC[circleCount].update();
+            circleCount++;
+            Sleep(1);
+
+        }
+
+        glFlush();
+        circleCount = 0;
+    }
+
+    //game_over = 1;
+    restart = 1;
+
+    delete[] CC;
 }
 
 int main(int argc, char** argv)
 {
-    //FreeConsole();
-    if(init)
-        initialization(argc, argv);
-    if(restart)
-        game_initialization();
+    // �ʱ�ȭ�� ���� 
+    if (init) {        
+        os.initGame(argc, argv, mat);
+        init = 0;
+    }
+
     glutDisplayFunc(display);
+
     glutMainLoop();
 
     return 0;
-
 }
+// ==================================================================================================== //
