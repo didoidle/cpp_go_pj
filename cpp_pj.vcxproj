@@ -155,17 +155,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CheckWinner.cpp" />
     <ClCompile Include="DrawGL.cpp" />
     <ClCompile Include="DrawView.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OperateGL.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CheckWinner.h" />
     <ClInclude Include="DrawGL.h" />
     <ClInclude Include="DrawView.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="OperateGL.h" />
-    <ClInclude Include="physics.h" />
+    <ClInclude Include="RigidCircle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

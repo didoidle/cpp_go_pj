@@ -8,6 +8,7 @@ void DrawGL::glDrawScale() {
 	glLoadIdentity();
 
 	glScalef(2.0, 2.0, 0);
+
 	glTranslatef(transf_x, transf_y, 0);
 
 	glClearColor(bR, bG, bB, 1.0f);

@@ -7,7 +7,7 @@
 #include "DrawView.h"
 #include "DrawGL.h"
 #include "OperateGL.h"
-#include "physics.h"
+#include "RigidCircle.h"
 #include "main.h"
 
 using namespace std;
@@ -63,7 +63,9 @@ void mouse_move(int pointX, int pointY)
     glPushMatrix();
 
     glMatrixMode(GL_MODELVIEW);
+
     glLoadIdentity();
+
     glColor3f(0.9f, 0.0f, 0.0f);
 
     glScalef(scale_x, scale_y, 0);
@@ -74,11 +76,12 @@ void mouse_move(int pointX, int pointY)
 
     glutSolidCube(0.02f);
 
-    glPopMatrix();
+    glPopMatrix(); // 곱하겠다.
 
     minDistance = 3.0f;
 
     glFlush();
+
     glClear(GL_COLOR_BUFFER_BIT);
 
     gl.glDrawScale();
@@ -101,7 +104,6 @@ void click(int A, int B, int px, int py)
                 check_over(position_x, position_y, mat[position_y][position_x][2]);
                 Turn = 0;
             }
-
         }
 }
 
@@ -184,7 +186,9 @@ void check_over(int xPos, int yPos, int color)  // 클릭할 떄마다 실행된다.
             default:
                 break;
             }
-            x = x + direct_x; y = y + direct_y;
+            x = x + direct_x;
+            y = y + direct_y;
+
             if (x >= 0 && y >= 0 && x <= 14 && y <= 14) {
                 if (mat[y][x][2] == color)
                 {
@@ -233,12 +237,14 @@ void over() {
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    rigidCircle* CC = new rigidCircle[255];
+    RigidCircle* CC = new RigidCircle[255];
+
     for (int y = 0; y < 15; y++)
         for (int x = 0; x < 15; x++)
         {
             if (mat[y][x][2] != 0) {
-                CC[circleCount] = rigidCircle(mat[y][x][0], mat[y][x][1],
+
+                CC[circleCount] = RigidCircle(mat[y][x][0], mat[y][x][1],
                     mat[position_y][position_x][0], mat[position_y][position_x][1],
                     radius, mat[y][x][2], 0.1);
 
@@ -251,32 +257,32 @@ void over() {
     for (int i = 0; i < 100; i++)
     {
         glClear(GL_COLOR_BUFFER_BIT);
+
         gl.glDrawScale();
         gl.drawLine();
 
         while (circleCount < maxCount)
         {
-
-
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
             glScalef(scale_x, scale_y, 0);
-            glTranslatef(transf_x, transf_y, 0);
+            glTranslatef(transf_x, transf_y, 0);            
             glTranslatef(CC[circleCount].x, CC[circleCount].y, 0);
-            glColor3f(CC[circleCount].R, CC[circleCount].G, CC[circleCount].B);
-            glBegin(GL_POLYGON);
-            for (float fAngle = 0.f; fAngle < 360.f; fAngle += 1.0f) {
-                glVertex2f(cos(fAngle) * radius, sin(fAngle) * radius);
 
-            }
+            
+            DrawView draw;
+            draw.drawCircle(CC[circleCount].clr);
+            
 
             glEnd();
             glPopMatrix();
+
             CC[circleCount].update();
             circleCount++;
             Sleep(1);
 
         }
+
         glFlush();
         circleCount = 0;
     }
