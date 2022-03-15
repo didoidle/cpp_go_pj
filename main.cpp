@@ -76,7 +76,7 @@ void mouseEvent(int pointX, int pointY)
 
     glutSolidCube(0.02f);
 
-    glPopMatrix(); // ���ϰڴ�.
+    glPopMatrix();
 
     minDistance = 3.0f;
 
@@ -120,28 +120,23 @@ void display() {
         restart = 0;
     }
     glClear(GL_COLOR_BUFFER_BIT);
-
-    // �⺻ ���콺 �̵��� ���� �Լ�.
+    
     glutPassiveMotionFunc(mouseEvent);
-
-    // �⺻ ���콺 Ŭ���� ���� �Լ�.
+    
     glutMouseFunc(clickEvent);
-
-    // Ű���� �Է½� ���� �Լ�.
+    
     glutKeyboardFunc(keyboardEvent);
-
-    // ȭ���?�׸���.
+    
     gl.glDrawScale();
 
     gl.drawLine();
 
     gl.glDrawStone(mat);
-
-    // ȭ�鿡 ����.
+    
     glFlush();
 }
 
-void direct(int x, int y)  // �˰��򿡼� �����?x ,y �ӽ� �����Ѵ�.
+void direct(int x, int y)  
 {
     direct_x = x;
     direct_y = y;
