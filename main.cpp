@@ -76,7 +76,7 @@ void mouseEvent(int pointX, int pointY)
 
     glutSolidCube(0.02f);
 
-    glPopMatrix(); // °öÇÏ°Ú´Ù.
+    glPopMatrix(); // ï¿½ï¿½ï¿½Ï°Ú´ï¿½.
 
     minDistance = 3.0f;
 
@@ -121,33 +121,33 @@ void display() {
     }
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // ±âº» ¸¶¿ì½º ÀÌµ¿½Ã Àû¿ëµÉ ÇÔ¼ö.
+    // ï¿½âº» ï¿½ï¿½ï¿½ì½º ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½.
     glutPassiveMotionFunc(mouseEvent);
 
-    // ±âº» ¸¶¿ì½º Å¬¸¯½Ã Àû¿ëµÉ ÇÔ¼ö.
+    // ï¿½âº» ï¿½ï¿½ï¿½ì½º Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½.
     glutMouseFunc(clickEvent);
 
-    // Å°º¸µå ÀÔ·Â½Ã Àû¿ëµÉ ÇÔ¼ö.
+    // Å°ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·Â½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½.
     glutKeyboardFunc(keyboardEvent);
 
-    // È­¸éÀ» ±×¸°´Ù.
+    // È­ï¿½ï¿½ï¿?ï¿½×¸ï¿½ï¿½ï¿½.
     gl.glDrawScale();
 
     gl.drawLine();
 
     gl.glDrawStone(mat);
 
-    // È­¸é¿¡ ¶ç¿î´Ù.
+    // È­ï¿½é¿¡ ï¿½ï¿½ï¿½ï¿½.
     glFlush();
 }
 
-void direct(int x, int y)  // ¾Ë°í¸®Áò¿¡¼­ »ç¿ëÇÒ x ,y ÀÓ½Ã ÀúÀåÇÑ´Ù.
+void direct(int x, int y)  // ï¿½Ë°ï¿½ï¿½ò¿¡¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿?x ,y ï¿½Ó½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 {
     direct_x = x;
     direct_y = y;
 }
 
-void checkOver(int xPos, int yPos, int color)  // Å¬¸¯ÇÒ ‹š¸¶´Ù ½ÇÇàµÈ´Ù.
+void checkOver(int xPos, int yPos, int color)  // Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È´ï¿?
 {
 
     int count[8] = { 0, };
@@ -295,7 +295,7 @@ void gameOverAnim() {
 
 int main(int argc, char** argv)
 {
-    // init game 
+    // ÃÊ±âÈ­¸é ½ÃÀÛ 
     if (init) {        
         os.initGame(argc, argv, mat);
         init = 0;
