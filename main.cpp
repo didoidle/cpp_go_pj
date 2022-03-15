@@ -295,7 +295,7 @@ void gameOverAnim() {
 
 int main(int argc, char** argv)
 {
-    // 초기화면 시작 
+    // init game 
     if (init) {        
         os.initGame(argc, argv, mat);
         init = 0;
