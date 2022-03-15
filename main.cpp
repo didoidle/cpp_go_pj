@@ -41,7 +41,7 @@ float radius = 0.03f;
 DrawGL gl;
 OperateGL os;
 
-void mouse_move(int pointX, int pointY)
+void mouseEvent(int pointX, int pointY)
 {
     float XX = (float)(pointX - 20) / 800;
     float YY = 0.97f - (float)(pointY) / 800;
@@ -89,25 +89,25 @@ void mouse_move(int pointX, int pointY)
     gl.glDrawStone(mat);
 }
 
-void click(int A, int B, int px, int py)
+void clickEvent(int A, int B, int px, int py)
 {
     if (B == GLUT_DOWN)
         if (mat[position_y][position_x][2] == 0)
         {
             if (Turn == 0) {
                 mat[position_y][position_x][2] = 1;
-                check_over(position_x, position_y, mat[position_y][position_x][2]);
+                checkOver(position_x, position_y, mat[position_y][position_x][2]);
                 Turn = 1;
             }
             else {
                 mat[position_y][position_x][2] = 2;
-                check_over(position_x, position_y, mat[position_y][position_x][2]);
+                checkOver(position_x, position_y, mat[position_y][position_x][2]);
                 Turn = 0;
             }
         }
 }
 
-void keyboard(unsigned char key, int x, int y)
+void keyboardEvent(unsigned char key, int x, int y)
 {
     if (key == 'q' || key == 'Q') exit(0);
     else if (key == 'S' || key == 's') os.resetGame(mat);
@@ -122,13 +122,13 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     // 기본 마우스 이동시 적용될 함수.
-    glutPassiveMotionFunc(mouse_move);
+    glutPassiveMotionFunc(mouseEvent);
 
     // 기본 마우스 클릭시 적용될 함수.
-    glutMouseFunc(click);
+    glutMouseFunc(clickEvent);
 
     // 키보드 입력시 적용될 함수.
-    glutKeyboardFunc(keyboard);
+    glutKeyboardFunc(keyboardEvent);
 
     // 화면을 그린다.
     gl.glDrawScale();
@@ -147,7 +147,7 @@ void direct(int x, int y)  // 알고리즘에서 사용할 x ,y 임시 저장한다.
     direct_y = y;
 }
 
-void check_over(int xPos, int yPos, int color)  // 클릭할 떄마다 실행된다.
+void checkOver(int xPos, int yPos, int color)  // 클릭할 떄마다 실행된다.
 {
 
     int count[8] = { 0, };
@@ -207,19 +207,19 @@ void check_over(int xPos, int yPos, int color)  // 클릭할 떄마다 실행된다.
 
         }
         if ((count[0] + count[4]) == 4) {            
-            over();
+            gameOverAnim();
             break;
         }
         else if ((count[1] + count[5]) == 4) {            
-            over();
+            gameOverAnim();
             break;
         }
         else if ((count[2] + count[6]) == 4) {            
-            over();
+            gameOverAnim();
             break;
         }
         else if ((count[3] + count[7]) == 4) {           
-            over();
+            gameOverAnim();
             break;
         }
         else
@@ -227,7 +227,7 @@ void check_over(int xPos, int yPos, int color)  // 클릭할 떄마다 실행된다.
     }
 }
 
-void over() {
+void gameOverAnim() {
 
     gl.glDrawStone(mat);
 
