@@ -1,23 +1,32 @@
 #pragma once
-#include "DrawView.h"
+#include <GL/glut.h>
+#include <GL/GLU.h>
+#include <cmath>
 
-class DrawGL : public DrawView
+class DrawGL
 {
 private:
-	float transf_x = -0.47;
-	float transf_y = -0.47;
+	float transX = -0.47;
+	float transY = -0.47;
 	float bR = (float)152 / 255;
 	float bG = (float)102 / 255;
 	float bB = (float)52 / 255;
+	float radius = 0.03f;
 
 public:
 	DrawGL();
+	~DrawGL();
 
-	// 바둑판의 크기 맞추기
+	//  board scale fixed 
 	void glDrawScale();
 
-	// 바둑판에 돌위치를 찾아서 원모양의 돌을 그린다.
+	void glDrawLine();
+
+	void glDrawCircle(int color);
+
+	// find stone color draw and p
 	void glDrawStone(float matrix[15][15][3]);
 
-};
+	
 
+};

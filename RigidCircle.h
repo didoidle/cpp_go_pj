@@ -9,7 +9,6 @@ public:
 	float x, y, vx, vy, t;
 	int clr;
 	float radius;
-public:
 	float gravity = -0.0098;
 
 	RigidCircle() {}
