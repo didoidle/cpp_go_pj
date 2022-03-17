@@ -165,7 +165,6 @@
     <ClInclude Include="CheckWinner.h" />
     <ClInclude Include="DrawGL.h" />
     <ClInclude Include="DrawView.h" />
-    <ClInclude Include="main.h" />
     <ClInclude Include="OperateGL.h" />
     <ClInclude Include="RigidCircle.h" />
   </ItemGroup>

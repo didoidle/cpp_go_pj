@@ -7,7 +7,7 @@ DrawView::DrawView() {}
 void DrawView::drawLine() {
 
 	// 줄의 색상
-	glColor3f(0.0f, 0.0f, 1.0f);
+	glColor3f(0.0f, 0.0f, 0.0f);
 
 	// 줄의 굵기
 	glLineWidth(2.0);
