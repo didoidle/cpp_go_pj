@@ -102,10 +102,10 @@ void checkOver(int xPos, int yPos, int color)
             switch (i)
             {
             case 0:
-                direct(-1, -1); //¿Þ ¾Æ·¡ ´ë°¢
+                direct(-1, -1); //ï¿½ï¿½ ï¿½Æ·ï¿½ ï¿½ë°¢
                 break;
             case 1:
-                direct(0, -1); // ¾Æ·¡
+                direct(0, -1); // ï¿½Æ·ï¿½
                 break;
             case 2:
                 direct(1, -1);
@@ -148,22 +148,22 @@ void checkOver(int xPos, int yPos, int color)
 
         if ((count[0] + count[4]) == 4) {
             gameOverEvent();
-            cout << (color == 1 ? "Èæµ¹ ½Â¸®" : "¹éµ¹ ½Â¸®") << endl;
+            cout << (color == 1 ? "ï¿½æµ¹ ï¿½Â¸ï¿½" : "ï¿½éµ¹ ï¿½Â¸ï¿½") << endl;
             break;
         }
         else if ((count[1] + count[5]) == 4) {
             gameOverEvent();
-            cout << (color == 1 ? "Èæµ¹ ½Â¸®" : "¹éµ¹ ½Â¸®") << endl;
+            cout << (color == 1 ? "ï¿½æµ¹ ï¿½Â¸ï¿½" : "ï¿½éµ¹ ï¿½Â¸ï¿½") << endl;
             break;
         }
         else if ((count[2] + count[6]) == 4) {
             gameOverEvent();
-            cout << (color == 1 ? "Èæµ¹ ½Â¸®" : "¹éµ¹ ½Â¸®") << endl;
+            cout << (color == 1 ? "ï¿½æµ¹ ï¿½Â¸ï¿½" : "ï¿½éµ¹ ï¿½Â¸ï¿½") << endl;
             break;
         }
         else if ((count[3] + count[7]) == 4) {
             gameOverEvent();
-            cout << (color == 1 ? "Èæµ¹ ½Â¸®" : "¹éµ¹ ½Â¸®") << endl;
+            cout << (color == 1 ? "ï¿½æµ¹ ï¿½Â¸ï¿½" : "ï¿½éµ¹ ï¿½Â¸ï¿½") << endl;
             break;
         }
         else
@@ -231,12 +231,12 @@ void clickEvent(int A, int B, int px, int py)
         {
             if (turn == 0) {
                 mat[pY][pX][2] = 1;
-                checkOver(pX, pY, 1); // Èæµ¹ , ÁÂÇ¥
+                checkOver(pX, pY, 1); // ï¿½æµ¹ , ï¿½ï¿½Ç¥
                 turn = 1;
             }
             else {
                 mat[pY][pX][2] = 2;
-                checkOver(pX, pY, 2);  // ¹éµ¹, ÁÂÇ¥ 
+                checkOver(pX, pY, 2);  // ï¿½éµ¹, ï¿½ï¿½Ç¥ 
                 turn = 0;
             }
         }
@@ -268,8 +268,6 @@ void display() {
     dg.glDrawLine();
 
     dg.glDrawStone(mat);
-    
-    //glFlush(); // ²¨µµ µÇ´øµ¥?
 }
 
 
@@ -284,8 +282,9 @@ void stealth()
 
 int main(int argc, char** argv)
 {
-    stealth();
 
+    stealth();
+    
     if (init) {        
         og.initGame(argc, argv, mat);
         init = false;
