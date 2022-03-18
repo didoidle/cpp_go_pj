@@ -4,7 +4,6 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include "DrawView.h"
 #include "DrawGL.h"
 #include "OperateGL.h"
 #include "RigidCircle.h"
@@ -17,13 +16,14 @@ int turn = 0;
 int pX, pY;
 int directX, directY;
 
-DrawGL dg; OperateGL og;
+DrawGL dg; OperateGL og; 
 
 void direct(int x, int y)
 {
     directX = x;
     directY = y;
 }
+
 void gameOverEvent() {
 
     int circleCount = 0, maxCount = 0;
@@ -171,7 +171,6 @@ void checkOver(int xPos, int yPos, int color)
     }
 }
 
-
 void mouseEvent(int pointX, int pointY)
 {
     float mouseD = 0, minDistance = 3.f, minDistanceX = 0, minDistanceY = 0;
@@ -207,16 +206,16 @@ void mouseEvent(int pointX, int pointY)
     glTranslatef(-0.47, -0.47, 0);
 
     glTranslatef(minDistanceX, minDistanceY, 0);
+
     glutSolidCube(0.02f);
 
     glPopMatrix();
-
+    
     glFlush();
 
     minDistance = 3.0f;
 
     glClear(GL_COLOR_BUFFER_BIT);
-
     dg.glDrawScale();
     dg.glDrawLine();
     dg.glDrawStone(mat);
@@ -231,12 +230,12 @@ void clickEvent(int A, int B, int px, int py)
         {
             if (turn == 0) {
                 mat[pY][pX][2] = 1;
-                checkOver(pX, pY, 1); // Èæµ¹ , ÁÂÇ¥
+                checkOver(pX, pY, 1); // Èæµ¹ , ÁÂÇ¥               
                 turn = 1;
             }
             else {
                 mat[pY][pX][2] = 2;
-                checkOver(pX, pY, 2);  // ¹éµ¹, ÁÂÇ¥ 
+                checkOver(pX, pY, 2);  // ¹éµ¹, ÁÂÇ¥
                 turn = 0;
             }
         }
@@ -245,7 +244,10 @@ void clickEvent(int A, int B, int px, int py)
 void keyboardEvent(unsigned char key, int x, int y) 
 {
     if (key == 'q' || key == 'Q') exit(0);
-    else if (key == 'S' || key == 's') og.resetGame(mat);
+    else if (key == 'S' || key == 's') { 
+        og.resetGame(mat); 
+        if (turn) { turn = 0; }
+    }
 }
 
 void display() {
@@ -269,12 +271,11 @@ void display() {
 
     dg.glDrawStone(mat);
     
-    //glFlush(); // ²¨µµ µÇ´øµ¥?
+    glFlush(); 
+
 }
 
-
-
-void stealth()
+void noShowConsole()
 {
     HWND Stealth;
     AllocConsole();
@@ -284,7 +285,7 @@ void stealth()
 
 int main(int argc, char** argv)
 {
-    stealth();
+    noShowConsole();
 
     if (init) {        
         og.initGame(argc, argv, mat);
@@ -292,7 +293,7 @@ int main(int argc, char** argv)
     } 
 
     glutDisplayFunc(display);
-   
+
     glutMainLoop();
 
     return 0;

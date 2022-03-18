@@ -18,6 +18,8 @@ void DrawGL::glDrawScale() {
 }
 
 void DrawGL::glDrawLine() {
+
+	
 	// 줄의 색상
 	glColor3f(0.0f, 0.0f, 0.0f);
 
