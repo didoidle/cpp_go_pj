@@ -1,10 +1,10 @@
-#include "DrawGL.h"
+ï»¿#include "DrawGL.h"
 
 DrawGL::DrawGL() {}
 
 DrawGL::~DrawGL(){}
 
-// ¹ÙµÏÆÇÀÇ Å©±â ¸ÂÃß±â
+// ë°”ë‘‘íŒì˜ í¬ê¸° ë§ì¶”ê¸°
 void DrawGL::glDrawScale() {
 
 	glLoadIdentity();
@@ -20,16 +20,16 @@ void DrawGL::glDrawScale() {
 void DrawGL::glDrawLine() {
 
 	
-	// ÁÙÀÇ »ö»ó
+	// ì¤„ì˜ ìƒ‰ìƒ
 	glColor3f(0.0f, 0.0f, 0.0f);
 
-	// ÁÙÀÇ ±½±â
+	// ì¤„ì˜ êµµê¸°
 	glLineWidth(2.0);
 
-	// °¡·Î ¼¼·Î¸¦ 15ÁÙ ¾¿ ±×¸®´Â ¹İº¹¹®
+	// ê°€ë¡œ ì„¸ë¡œë¥¼ 15ì¤„ ì”© ê·¸ë¦¬ëŠ” ë°˜ë³µë¬¸
 	for (int i = 0; i < 15; i++)
 	{
-		// °¡·Î
+		// ê°€ë¡œ
 		glBegin(GL_LINES);
 
 		glVertex2f(0.f, (float)i / 15);
@@ -38,7 +38,7 @@ void DrawGL::glDrawLine() {
 
 		glEnd();
 
-		// ¼¼·Î
+		// ì„¸ë¡œ
 		glBegin(GL_LINES);
 
 		glVertex2f((float)i / 15.f, 0.f);
@@ -51,7 +51,7 @@ void DrawGL::glDrawLine() {
 
 void DrawGL::glDrawCircle(int color) {
 
-	// »ö»ó Á¤ÇÏ±â
+	// ìƒ‰ìƒ ì •í•˜ê¸°
 	if (color == 1) {
 		glColor3f(0.0f, 0.0f, 0.0f);
 	}
@@ -60,15 +60,15 @@ void DrawGL::glDrawCircle(int color) {
 
 	}
 
-	// ´Ù°¢ÇüÀ¸·Î ¼³Á¤ÈÄ
+	// ë‹¤ê°í˜•ìœ¼ë¡œ ì„¤ì •í›„
 	glBegin(GL_POLYGON);
 
-	// ¿øÇüÀ¸·Î ¸¸µé¾îÁÖ±â
+	// ì›í˜•ìœ¼ë¡œ ë§Œë“¤ì–´ì£¼ê¸°
 	for (float fAngle = 0.f; fAngle < 360.f; fAngle += 1.0f)
 		glVertex2f(cos(fAngle) * radius, sin(fAngle) * radius);
 }
 
-// ¹ÙµÏÆÇ¿¡ µ¹À§Ä¡¸¦ Ã£¾Æ¼­ ¿ø¸ğ¾çÀÇ µ¹À» ±×¸°´Ù.
+// ë°”ë‘‘íŒì— ëŒìœ„ì¹˜ë¥¼ ì°¾ì•„ì„œ ì›ëª¨ì–‘ì˜ ëŒì„ ê·¸ë¦°ë‹¤.
 void DrawGL::glDrawStone(float matrix[15][15][3]) {
 
 	for (int y = 0; y < 15; y++)
@@ -76,10 +76,10 @@ void DrawGL::glDrawStone(float matrix[15][15][3]) {
 		{
 			if (matrix[y][x][2] != 0) {
 
-				// ¹ÙµÏµ¹ÀÇ ÁÂÇ¥¸¦ Ã£¾ÆÁÖ´Â ºÎºĞ
+				// ë°”ë‘‘ëŒì˜ ì¢Œí‘œë¥¼ ì°¾ì•„ì£¼ëŠ” ë¶€ë¶„
 				glMatrixMode(GL_MODELVIEW);
 
-				glLoadIdentity(); // Çà·Ä »ı»ê
+				glLoadIdentity(); // í–‰ë ¬ ìƒì‚°
 
 				glScalef(2.0, 2.0, 0);
 

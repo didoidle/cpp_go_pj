@@ -1,4 +1,4 @@
-#include <GL/glut.h>
+﻿#include <GL/glut.h>
 #include <GL/GLU.h>
 #include <stdio.h>
 #include <iostream>
@@ -87,9 +87,9 @@ void gameOverEvent() {
 }
 
 void checkOver(int xPos, int yPos, int color)
-{
+{ 
 
-    int count[8] = { 0, }; // [0 0 0 0 0 0 0 0]
+    int count[8] = { 0, }; 
 
     for (int i = 0; i < 8; i++)
     {
@@ -102,10 +102,10 @@ void checkOver(int xPos, int yPos, int color)
             switch (i)
             {
             case 0:
-                direct(-1, -1); //�� �Ʒ� �밢
+                direct(-1, -1); 
                 break;
             case 1:
-                direct(0, -1); // �Ʒ�
+                direct(0, -1); 
                 break;
             case 2:
                 direct(1, -1);
@@ -148,22 +148,22 @@ void checkOver(int xPos, int yPos, int color)
 
         if ((count[0] + count[4]) == 4) {
             gameOverEvent();
-            cout << (color == 1 ? "�浹 �¸�" : "�鵹 �¸�") << endl;
+            cout << (color == 1 ? "BLACK WIN" : "WHITE WIN") << endl;
             break;
         }
         else if ((count[1] + count[5]) == 4) {
             gameOverEvent();
-            cout << (color == 1 ? "�浹 �¸�" : "�鵹 �¸�") << endl;
+            cout << (color == 1 ? "BLACK WIN" : "WHITE WIN") << endl;
             break;
         }
         else if ((count[2] + count[6]) == 4) {
             gameOverEvent();
-            cout << (color == 1 ? "�浹 �¸�" : "�鵹 �¸�") << endl;
+            cout << (color == 1 ? "BLACK WIN" : "WHITE WIN") << endl;
             break;
         }
         else if ((count[3] + count[7]) == 4) {
             gameOverEvent();
-            cout << (color == 1 ? "�浹 �¸�" : "�鵹 �¸�") << endl;
+            cout << (color == 1 ? "BLACK WIN" : "WHITE WIN") << endl;
             break;
         }
         else
@@ -230,18 +230,18 @@ void clickEvent(int A, int B, int px, int py)
         {
             if (turn == 0) {
                 mat[pY][pX][2] = 1;
-                checkOver(pX, pY, 1); // �浹 , ��ǥ               
+                checkOver(pX, pY, 1); 
                 turn = 1;
             }
             else {
                 mat[pY][pX][2] = 2;
-                checkOver(pX, pY, 2);  // �鵹, ��ǥ
+                checkOver(pX, pY, 2); 
                 turn = 0;
             }
         }
 }
 
-void keyboardEvent(unsigned char key, int x, int y) 
+void keyboardEvent(unsigned char key, int x, int y )
 {
     if (key == 'q' || key == 'Q') exit(0);
     else if (key == 'S' || key == 's') { 
@@ -296,5 +296,5 @@ int main(int argc, char** argv)
 
     glutMainLoop();
 
-    return 0;
+    return 0;  
 }

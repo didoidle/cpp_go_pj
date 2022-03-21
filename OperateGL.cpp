@@ -1,8 +1,8 @@
-#include "OperateGL.h"
+ï»¿#include "OperateGL.h"
 
 void OperateGL::initGame(int argc, char** argv, float matrix[15][15][3])
 {
-    // Ã¢À» ¶ç¿î´Ù.
+    // ì°½ì„ ë„ìš´ë‹¤.
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_STENCIL);
     glutInitWindowPosition(100, 100);
@@ -11,7 +11,7 @@ void OperateGL::initGame(int argc, char** argv, float matrix[15][15][3])
     dg.glDrawScale();
     dg.glDrawLine();
 
-    // ¹ÙµÏÆÇÀÇ ÁÂÇ¥µéÀ» ÀÔ·ÂÇØÁØ´Ù.x, y
+    // ë°”ë‘‘íŒì˜ ì¢Œí‘œë“¤ì„ ì…ë ¥í•´ì¤€ë‹¤.x, y
     for (int y = 1; y <= 15; y++){
         for (int x = 0; x < 15; x++)
         {
@@ -19,13 +19,13 @@ void OperateGL::initGame(int argc, char** argv, float matrix[15][15][3])
             matrix[y - 1][x][1] = 1.f - ((float)y / 15);
         }
     }
-    // ÁØºñµÇ¸é È­¸éÀ» ¶ç¿î´Ù.
+    // ì¤€ë¹„ë˜ë©´ í™”ë©´ì„ ë„ìš´ë‹¤.
     glFlush();
 }
 
 void OperateGL::resetGame(float matrix[15][15][3])
 {
-    // ¹ÙµÏÆÇÀÇ ¹ÙµÏÁÂÇ¥¿¡ »óÅÂ¸¦ ÃÊ±âÈ­ ÇØÁØ´Ù.
+    // ë°”ë‘‘íŒì˜ ë°”ë‘‘ì¢Œí‘œì— ìƒíƒœë¥¼ ì´ˆê¸°í™” í•´ì¤€ë‹¤.
     for (int y = 0; y < 15; y++)
         for (int x = 0; x < 15; x++)
         {
